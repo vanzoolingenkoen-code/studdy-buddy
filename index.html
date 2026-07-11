@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StudyBuddy - Moderne huiswerkplanner voor middelbare scholieren">
+    <title>StudyBuddy - Huiswerkplanner</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome voor iconen -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation & Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+                <h1>StudyBuddy</h1>
+            </div>
+            <nav class="nav-buttons">
+                <button class="nav-btn" id="navStats" title="Statistieken">
+                    <i class="fas fa-chart-bar"></i>
+                </button>
+                <button class="nav-btn" id="navCalendar" title="Kalender">
+                    <i class="fas fa-calendar-alt"></i>
+                </button>
+                <button class="nav-btn" id="navNotes" title="Aantekeningen">
+                    <i class="fas fa-sticky-note"></i>
+                </button>
+                <button class="nav-btn" id="navSettings" title="Instellingen">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="theme-toggle" id="themeToggle" title="Wissel thema">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Dashboard Section -->
+        <section class="dashboard">
+            <div class="dashboard-card">
+                <div class="dashboard-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="dashboard-content">
+                    <h3>Totaal Taken</h3>
+                    <p class="dashboard-number" id="totalTasks">0</p>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-icon completed">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="dashboard-content">
+                    <h3>Afgerond</h3>
+                    <p class="dashboard-number" id="completedTasks">0</p>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-icon urgent">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="dashboard-content">
+                    <h3>Vandaag Fällig</h3>
+                    <p class="dashboard-number" id="todayTasks">0</p>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-icon pending">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="dashboard-content">
+                    <h3>In Behandeling</h3>
+                    <p class="dashboard-number" id="pendingTasks">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper" id="mainView">
+            <!-- Sidebar with Add Task Form -->
+            <aside class="sidebar">
+                <div class="add-task-container">
+                    <h2>Nieuw Huiswerk</h2>
+                    <form id="taskForm" class="task-form">
+                        <!-- Subject Input -->
+                        <div class="form-group">
+                            <label for="subject">Vak <span class="required">*</span></label>
+                            <select id="subject" required>
+                                <option value="">Kies een vak...</option>
+                                <option value="Nederlands">Nederlands</option>
+                                <option value="Engels">Engels</option>
+                                <option value="Duits">Duits</option>
+                                <option value="Frans">Frans</option>
+                                <option value="Wiskunde">Wiskunde</option>
+                                <option value="Scheikunde">Scheikunde</option>
+                                <option value="Natuurkunde">Natuurkunde</option>
+                                <option value="Biologie">Biologie</option>
+                                <option value="Geschiedenis">Geschiedenis</option>
+                                <option value="Aardrijkskunde">Aardrijkskunde</option>
+                                <option value="Informatica">Informatica</option>
+                                <option value="Kunst">Kunst</option>
+                                <option value="Lichamelijke Opvoeding">Lichamelijke Opvoeding</option>
+                                <option value="Maatschappijleer">Maatschappijleer</option>
+                                <option value="Muziek">Muziek</option>
+                            </select>
+                        </div>
+
+                        <!-- Description Input -->
+                        <div class="form-group">
+                            <label for="description">Omschrijving <span class="required">*</span></label>
+                            <textarea id="description" placeholder="Beschrijf de opdracht..." required></textarea>
+                        </div>
+
+                        <!-- Deadline Input -->
+                        <div class="form-group">
+                            <label for="deadline">Deadline <span class="required">*</span></label>
+                            <input type="date" id="deadline" required>
+                        </div>
+
+                        <!-- Priority Selection -->
+                        <div class="form-group">
+                            <label for="priority">Prioriteit</label>
+                            <select id="priority">
+                                <option value="laag">Laag</option>
+                                <option value="normaal" selected>Normaal</option>
+                                <option value="hoog">Hoog</option>
+                            </select>
+                        </div>
+
+                        <!-- Estimated Time -->
+                        <div class="form-group">
+                            <label for="estimatedTime">Geschatte tijd (minuten)</label>
+                            <input type="number" id="estimatedTime" placeholder="60" min="5" max="480">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-add-task">
+                            <i class="fas fa-plus"></i>
+                            Toevoegen
+                        </button>
+                    </form>
+
+                    <!-- Quick Add Buttons -->
+                    <div class="quick-actions">
+                        <h3>Snelle acties</h3>
+                        <button class="quick-btn" id="exportDataBtn">
+                            <i class="fas fa-download"></i>
+                            Exporteer
+                        </button>
+                        <button class="quick-btn" id="importCalendarBtn">
+                            <i class="fas fa-upload"></i>
+                            Importeer
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Tasks Section -->
+            <section class="main-content">
+                <!-- Search & Filter Bar -->
+                <div class="controls-bar">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            class="search-input" 
+                            placeholder="Zoeken naar taken..."
+                        >
+                    </div>
+
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">
+                            <i class="fas fa-th-list"></i>
+                            Alle
+                        </button>
+                        <button class="filter-btn" data-filter="pending">
+                            <i class="fas fa-hourglass-half"></i>
+                            Openstaande
+                        </button>
+                        <button class="filter-btn" data-filter="completed">
+                            <i class="fas fa-check-circle"></i>
+                            Afgerond
+                        </button>
+                        <button class="filter-btn" data-filter="urgent">
+                            <i class="fas fa-fire"></i>
+                            Urgent
+                        </button>
+                    </div>
+
+                    <div class="sort-container">
+                        <select id="sortSelect" class="sort-select">
+                            <option value="deadline">Op Deadline</option>
+                            <option value="priority">Op Prioriteit</option>
+                            <option value="subject">Op Vak</option>
+                            <option value="date-added">Nieuwste Eerst</option>
+                            <option value="time">Op Geschatte Tijd</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tasks List -->
+                <div class="tasks-container" id="tasksContainer">
+                    <!-- Tasks zullen hier dynamisch ingevoegd worden -->
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState">
+                    <i class="fas fa-inbox"></i>
+                    <h3>Geen taken</h3>
+                    <p>Voeg je eerste huiswerk toe om te beginnen!</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- MODAL VIEWS -->
+
+        <!-- Statistieken Modal -->
+        <div class="modal" id="statsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-chart-bar"></i> Statistieken</h2>
+                    <button class="modal-close" onclick="closeModal('statsModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <h3>Totale Taken</h3>
+                            <p class="stat-number" id="stat-total">0</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3>Afgewerkt %</h3>
+                            <p class="stat-number" id="stat-percentage">0%</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3>Totale Uren</h3>
+                            <p class="stat-number" id="stat-hours">0h</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3>Gemiddelde per Vak</h3>
+                            <p class="stat-number" id="stat-average">0</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Taken per Vak</h3>
+                        <canvas id="subjectChart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Prioriteitsverdeling</h3>
+                        <canvas id="priorityChart"></canvas>
+                    </div>
+
+                    <div class="stats-table">
+                        <h3>Vak Overzicht</h3>
+                        <table id="subjectStatsTable">
+                            <thead>
+                                <tr>
+                                    <th>Vak</th>
+                                    <th>Taken</th>
+                                    <th>Afgerond</th>
+                                    <th>Uren</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statsTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kalender Modal -->
+        <div class="modal" id="calendarModal">
+            <div class="modal-content modal-lg">
+                <div class="modal-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Kalender</h2>
+                    <button class="modal-close" onclick="closeModal('calendarModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="calendar-wrapper">
+                        <div class="calendar-header">
+                            <button id="prevMonth">&lt;</button>
+                            <h3 id="currentMonth"></h3>
+                            <button id="nextMonth">&gt;</button>
+                        </div>
+                        <div id="calendar"></div>
+                        <div class="calendar-legend">
+                            <span class="legend-item has-tasks">
+                                <span class="legend-dot"></span> Met taken
+                            </span>
+                            <span class="legend-item today">
+                                <span class="legend-dot"></span> Vandaag
+                            </span>
+                            <span class="legend-item deadline">
+                                <span class="legend-dot"></span> Deadline
+                            </span>
+                        </div>
+                    </div>
+                    <div class="calendar-sidebar">
+                        <h4>Geselecteerde Dag</h4>
+                        <div id="selectedDayTasks"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aantekeningen Modal -->
+        <div class="modal" id="notesModal">
+            <div class="modal-content modal-lg">
+                <div class="modal-header">
+                    <h2><i class="fas fa-sticky-note"></i> Aantekeningen</h2>
+                    <button class="modal-close" onclick="closeModal('notesModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="notes-container">
+                        <div class="notes-sidebar">
+                            <button class="btn btn-primary" id="newNoteBtn" style="width: 100%; margin-bottom: 1rem;">
+                                <i class="fas fa-plus"></i> Nieuwe Aantekening
+                            </button>
+                            <div id="notesList"></div>
+                        </div>
+                        <div class="notes-editor">
+                            <textarea id="noteEditor" placeholder="Voer hier je aantekeningen in..." style="display: none;"></textarea>
+                            <div id="noNoteSelected" class="empty-state">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Geen aantekening geselecteerd</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instellingen Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-cog"></i> Instellingen</h2>
+                    <button class="modal-close" onclick="closeModal('settingsModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>Thema</h3>
+                        <div class="setting-item">
+                            <label for="themeSetting">Donkere Modus</label>
+                            <input type="checkbox" id="themeSetting" class="toggle-switch">
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Meldingen</h3>
+                        <div class="setting-item">
+                            <label for="notificationsSetting">Dagelijkse Herinnering</label>
+                            <input type="checkbox" id="notificationsSetting" class="toggle-switch" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label for="notificationTime">Tijdstip</label>
+                            <input type="time" id="notificationTime" value="07:00">
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Vakken</h3>
+                        <div class="setting-item">
+                            <label for="customSubjectInput">Voeg vak toe:</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" id="customSubjectInput" placeholder="Nieuw vak">
+                                <button class="btn btn-primary" id="addSubjectBtn">Voeg toe</button>
+                            </div>
+                        </div>
+                        <div id="customSubjectsList"></div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Gegevens</h3>
+                        <div class="setting-item">
+                            <button class="btn btn-secondary" id="exportBtn">
+                                <i class="fas fa-download"></i> Exporteer Gegevens
+                            </button>
+                        </div>
+                        <div class="setting-item">
+                            <button class="btn btn-secondary" id="importBtn">
+                                <i class="fas fa-upload"></i> Importeer Gegevens
+                            </button>
+                        </div>
+                        <div class="setting-item">
+                            <button class="btn btn-danger" id="resetBtn">
+                                <i class="fas fa-trash"></i> Wis Alles
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Over StudyBuddy</h3>
+                        <p>Versie 2.0</p>
+                        <p>Je persoonlijke huiswerkplanner voor scholieren</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Taak Details Modal -->
+        <div class="modal" id="taskDetailsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Taakdetails</h2>
+                    <button class="modal-close" onclick="closeModal('taskDetailsModal')">×</button>
+                </div>
+                <div class="modal-body" id="taskDetailsContent">
+                </div>
+            </div>
+        </div>
+
+        <!-- Focus Mode Modal -->
+        <div class="modal modal-fullscreen" id="focusModeModal">
+            <div class="focus-mode-content">
+                <button class="modal-close" onclick="closeFocusMode()" style="z-index: 10;">×</button>
+                <div class="focus-header">
+                    <h2 id="focusTaskTitle"></h2>
+                    <div class="focus-timer">
+                        <div class="timer-display" id="timerDisplay">25:00</div>
+                        <div class="timer-controls">
+                            <button id="startTimerBtn" class="btn btn-primary">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button id="resetTimerBtn" class="btn btn-secondary">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="focus-body">
+                    <p id="focusTaskDesc"></p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 StudyBuddy - Je persoonlijke huiswerkplanner</p>
+    </footer>
+
+    <!-- Hidden File Input for Import -->
+    <input type="file" id="fileInput" accept=".json" style="display: none;">
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
